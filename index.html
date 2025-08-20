@@ -58,6 +58,46 @@
             padding: 0 20px;
         }
         
+        /* Market Ticker */
+        .market-ticker {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(5, 5, 5, 0.95);
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+            z-index: 2000;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            overflow: hidden;
+        }
+        
+        .ticker-content {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            animation: ticker-scroll 30s linear infinite;
+        }
+        
+        .ticker-content span {
+            margin: 0 20px;
+            white-space: nowrap;
+        }
+        
+        .price-up {
+            color: var(--neon-green);
+        }
+        
+        .price-down {
+            color: #ff3333;
+        }
+        
+        @keyframes ticker-scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
         /* Header & Navigation */
         header {
             background-color: rgba(10, 10, 10, 0.95);
@@ -67,6 +107,7 @@
             padding: 15px 0;
             border-bottom: 1px solid rgba(0, 243, 255, 0.2);
             backdrop-filter: blur(5px);
+            top: 37px; /* Height of the ticker */
         }
         
         .nav-container {
@@ -168,7 +209,7 @@
             align-items: center;
             position: relative;
             overflow: hidden;
-            padding-top: 80px;
+            padding-top: 120px; /* Increased from 80px to account for ticker */
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(0, 243, 255, 0.03)" stroke-width="1"/></svg>');
         }
         
@@ -273,6 +314,7 @@
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: all 0.5s ease;
             z-index: -1;
+            animation: none;
         }
         
         .btn:hover::before {
@@ -1088,6 +1130,7 @@
             margin-bottom: 15px;
             color: var(--neon-blue);
             font-size: 1.5rem;
+            animation: none;
         }
         
         .payment-step-content p {
@@ -1283,6 +1326,7 @@
             color: var(--text-light);
             font-family: 'Rajdhani', sans-serif;
             font-weight: 600;
+            animation: none;
         }
         
         .form-group input {
@@ -1748,7 +1792,7 @@
             font-size: 0.9rem;
         }
         
-        /* Robot Thanks */
+        /* Robot Thanks - MODIFIED TO STOP MOVEMENT */
         .robot-thanks {
             position: fixed;
             bottom: 30px;
@@ -1765,11 +1809,12 @@
             z-index: 1000;
             transition: all 0.3s ease;
             box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+            animation: subtle-glow 3s ease-in-out infinite alternate;
         }
         
         .robot-thanks:hover {
-            transform: scale(1.1) rotate(15deg);
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.6);
+            transform: none;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
         }
         
         .robot-icon {
@@ -1779,7 +1824,7 @@
         }
         
         .robot-thanks:hover .robot-icon {
-            transform: rotate(-15deg);
+            transform: none;
         }
         
         .robot-message {
@@ -1814,6 +1859,30 @@
         .robot-message p span {
             color: var(--neon-green);
             font-weight: 700;
+        }
+        
+        /* Add notification badge to robot */
+        .robot-thanks::after {
+            content: '1';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: var(--neon-pink);
+            color: var(--dark-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes subtle-glow {
+            0% { box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); }
+            100% { box-shadow: 0 0 25px rgba(0, 243, 255, 0.6); }
         }
         
         /* Responsive Styles */
@@ -1915,6 +1984,18 @@
             .footer-column {
                 min-width: 100%;
             }
+            
+            .market-ticker {
+                display: none;
+            }
+            
+            header {
+                top: 0;
+            }
+            
+            .hero {
+                padding-top: 80px;
+            }
         }
         
         @media (max-width: 576px) {
@@ -1968,14 +2049,114 @@
                 width: 95%;
             }
         }
+
+        /* FAQ Section */
+        .faq {
+            background-color: var(--darker-bg);
+            position: relative;
+        }
+
+        .faq-item {
+            margin-bottom: 20px;
+            background: rgba(10, 10, 10, 0.7);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 243, 255, 0.1);
+        }
+
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--neon-blue);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+        }
+
+        .faq-answer {
+            padding: 0 20px 20px;
+            display: none;
+            color: var(--text-dim);
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-item.active .faq-question {
+            background: rgba(0, 243, 255, 0.1);
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 120px;
+            background: var(--neon-blue);
+            color: var(--dark-bg);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Newsletter Form */
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .newsletter-form input {
+            padding: 10px;
+            background: rgba(10,10,10,0.7);
+            border: 1px solid var(--neon-blue);
+            color: var(--text-light);
+            flex: 1;
+        }
+
+        .newsletter-form button {
+            padding: 10px 20px;
+            background: var(--neon-blue);
+            color: var(--dark-bg);
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+    <!-- Market Ticker -->
+    <div class="market-ticker">
+        <div class="ticker-content">
+            <span>XAU/USD: 3348.58 <small class="price-up">+0.99%</small></span>
+            <span>EUR/USD: 1.1655 <small class="price-up">+0.04%</small></span>
+            <span>GBP/USD: 1.3570 <small class="price-up">+0.23%</small></span>
+            <span>USD/JPY: 145.00 <small class="price-up">+0.31%</small></span>
+            <span>BTC/USD: 114620 <small class="price-up">+1.04%</small></span>
+        </div>
+    </div>
+
     <!-- Header -->
     <header>
         <div class="container nav-container">
             <a href="#" class="logo">
-                <img src="https://assets.onecompiler.app/43f3fd8pq/43kt8tafc/1000075448.png" alt="TKING Logo" class="logo-img">
+                <img src="https://uploads.onecompiler.io/43f3fd8pq/43kt8tafc/1000075448.png" alt="TKING Logo" class="logo-img">
                 <span class="logo-text">TKINGBEAST</span>
             </a>
             <nav class="nav-links">
@@ -2018,14 +2199,14 @@
                   stroke="rgba(0, 243, 255, 0.5)" 
                   stroke-width="2" 
                   fill="none" 
-                  stroke-linecap="round" 
-                  stroke-linejoin="round"/>
+                  stroke-linecap: round; 
+                  stroke-linejoin: round;/>
             <path d="M0,150 L50,130 L100,140 L150,120 L200,110 L250,90 L300,100 L350,80 L400,70 L450,60 L500,50" 
                   stroke="rgba(255, 0, 247, 0.5)" 
                   stroke-width="2" 
                   fill="none" 
-                  stroke-linecap="round" 
-                  stroke-linejoin="round"/>
+                  stroke-linecap: round; 
+                  stroke-linejoin: round;/>
         </svg>
     </section>
 
@@ -2058,7 +2239,7 @@
                 <div class="about-image">
                     <div class="about-image-inner">
                         <div class="about-image-front">
-                            <img src="https://assets.onecompiler.app/43f3fd8pq/43kt8tafc/1000077230.png" alt="Forex Trading Chart">
+                            <img src="https://uploads.onecompiler.io/43f3fd8pq/43kt8tafc/1000077230.png" alt="Forex Trading Chart">
                         </div>
                         <div class="about-image-back">
                             <p>"This system helped me pass my <span class="highlight">FTMO challenge in 7 days</span> using just 1-2 trades per day. The precision is unmatched."</p>
@@ -2180,7 +2361,7 @@
                     </div>
                 </div>
                 <div class="testimonial-card">
-                    <p class="testimonial-text">"As a full-time working mom, I needed a strategy that didn't require me to watch charts all day. This system gives me 2-3 high probability setups daily that I can trade during my lunch break. Life-changing!"</p>
+                    <p class="testimonial-text">"As a full-time working mom, I needed a strategy that didn't require me to watch charts all day. This system gives me 2-3 high probability setups daily that I can trade during my lunch break that that life-changing!"</p>
                     <div class="testimonial-author">
                         <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Trader" class="testimonial-author-img">
                         <div>
@@ -2198,6 +2379,35 @@
                             <div class="testimonial-author-title">FundedNext Trader ($200k)</div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="section faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">What is the win rate? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Our strategy boasts a 94% win rate based on historical backtesting and real trading results.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Is this suitable for beginners? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Yes, the vault includes step-by-step guides suitable for all levels.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How do I get support? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Lifetime support via WhatsApp and email.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">What payment methods are accepted? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">We accept USDT on TRC20 and ERC20 networks.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Is there a refund policy? <i class="fas fa-chevron-down"></i></div>
+                    <div class="faq-answer">Due to the digital nature of the product, all sales are final. However, we offer full support to ensure your success.</div>
                 </div>
             </div>
         </div>
@@ -2230,16 +2440,16 @@
                         <p>Complete our quick verification form with your details and the Transaction ID. This helps us verify your payment quickly.</p>
                         <div class="payment-links">
                             <a href="https://forms.gle/YovSpjhdyPhogHkD8" class="payment-link" target="_blank"><i class="fas fa-file-alt"></i> Access Form</a>
-                            <a href="https://wa.me/251991493255" class="payment-link" target="_blank"><i class="fab fa-whatsapp"></i> Form Help</a>
+                            <a href="https://wa.me/25190 524 3667" class="payment-link" target="_blank"><i class="fab fa-whatsapp"></i> Form Help</a>
                         </div>
                     </div>
                 </div>
                 <div class="payment-step">
                     <div class="payment-step-content">
                         <h3>Receive Login Details</h3>
-                        <p>I'll manually verify your payment (usually within 24 hours) and email you the login credentials for the private vault website. Check your spam folder if you don't see it.</p>
+                        <p>my team will manually verify your payment (usually within 24 hours) and email you the login credentials for the private vault website. Check your spam folder if you don't see it.</p>
                         <div class="payment-links">
-                            <a href="mailto:hermelaasmro42@gmail.com" class="payment-link"><i class="fas fa-envelope"></i> Email Support</a>
+                            <a href="mailto:tkingbeast930@gmail.com" class="payment-link"><i class="fas fa-envelope"></i> Email Support</a>
                         </div>
                     </div>
                 </div>
@@ -2254,7 +2464,7 @@
             <p class="cta-subtitle">Join the elite traders who are passing funding challenges and scaling accounts with this battle-tested scalping system. Your future as a funded trader starts today.</p>
             <div class="cta-buttons">
                 <a href="#payment" class="btn">Get Instant Access for $100</a>
-                <a href="https://wa.me/251991493255" class="btn btn-secondary" target="_blank"><i class="fab fa-whatsapp"></i> Ask Questions</a>
+                <a href="https://wa.me/tkingbeast" class="btn btn-secondary" target="_blank"><i class="fab fa-whatsapp"></i> Ask Questions</a>
             </div>
         </div>
     </section>
@@ -2265,14 +2475,14 @@
             <div class="footer-content">
                 <div class="footer-column">
                     <a href="#" class="footer-logo">
-                        <img src="https://assets.onecompiler.app/43f3fd8pq/43kt8tafc/1000075448.png"alt="TKING Logo" class="footer-logo-img">
+                        <img src="https://uploads.onecompiler.io/43f3fd8pq/43kt8tafc/1000075448.png"alt="TKING Logo" class="footer-logo-img">
                         <span class="footer-logo-text">TKINGBEAST</span>
                     </a>
                     <p class="footer-desc">Providing traders with weaponized trading strategies to conquer prop firm challenges and achieve financial freedom through precision scalping techniques.</p>
                     <div class="social-links">
                         <a href="https://www.instagram.com/tking_beast?igsh=dmpqdmR5dzlkbTN1" class="social-link" target="_blank"><i class="fab fa-instagram"></i></a>
                         <a href="https://t.me/Eastplans" class="social-link" target="_blank"><i class="fab fa-telegram"></i></a>
-                        <a href="https://wa.me/251991493255" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://wa.me/25190 524 3667" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
                 <div class="footer-column">
@@ -2288,13 +2498,21 @@
                 <div class="footer-column">
                     <h3>Support</h3>
                     <ul class="footer-links">
-                        <li class="footer-link"><a href="https://wa.me/251991493255" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Support</a></li>
+                        <li class="footer-link"><a href="https://wa.me/25190 524 3667" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Support</a></li>
                         <li class="footer-link"><a href="mailto:tkingbeast930@gmail.com"><i class="fas fa-envelope"></i> Email Support</a></li>
                     </ul>
                 </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Stay updated with trading tips</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email">
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 TKINGBEAST. All rights reserved. | Not financial advice. Trading carries risk. Past performance is not indicative of future results.</p>
+                <p>&copy; 2025 TKINGBEAST. All rights reserved. Trading carries risk. Past performance is not indicative of future results.</p>
             </div>
         </div>
     </footer>
@@ -2488,10 +2706,15 @@
             <i class="fas fa-robot"></i>
         </div>
         <div class="robot-message">
-            <p>Special thanks to my king <span>LilNahi</span> 👑 — proud of you, bro. And heartfelt thanks to <span>jesus lord</span> 💛 — your support means the world.</p>
-            <p>This vault is dedicated to all the traders who never give up. Keep grinding, kings GOD.</p>
+            <p>Special thanks to lord <span>jesus</span> 👑 — thank you. And heartfelt thanks to lil nahi</span> 💛 — your support means the world.</p>
+            <p>This vault is dedicated to all the traders who never give up. Keep grinding, kings GOD is always with you.</p>
         </div>
     </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <script>
         // Mobile Menu Toggle
@@ -2748,6 +2971,60 @@
                 alert('Screen recording detected. This content is protected.');
             }
         });
+        
+        // Market Ticker Price Updates
+        function updateTickerPrices() {
+            const tickerItems = document.querySelectorAll('.ticker-content span');
+            
+            tickerItems.forEach(item => {
+                const changeElement = item.querySelector('small');
+                if (changeElement) {
+                    // Random small price change
+                    const change = (Math.random() - 0.5) * 0.3;
+                    const isPositive = change >= 0;
+                    
+                    // Update the change indicator
+                    changeElement.textContent = `${isPositive ? '+' : ''}${change.toFixed(2)}%`;
+                    changeElement.className = isPositive ? 'price-up' : 'price-down';
+                    
+                    // Update the price slightly (just for visual effect)
+                    const priceText = item.textContent.split(' ')[0];
+                    const currencyPair = priceText.split(':')[0];
+                    const currentPrice = parseFloat(priceText.split(':')[1]);
+                    const newPrice = currentPrice * (1 + change/100);
+                    
+                    item.innerHTML = `${currencyPair}: ${newPrice.toFixed(isNaN(newPrice) ? 4 : 2)} <small class="${isPositive ? 'price-up' : 'price-down'}">${isPositive ? '+' : ''}${change.toFixed(2)}%</small>`;
+                }
+            });
+        }
+        
+        // Update prices every 10 seconds
+        setInterval(updateTickerPrices, 10000);
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                item.classList.toggle('active');
+            });
+        });
+
+        // Back to Top
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     </script>
 </body>
 </html>
+```
